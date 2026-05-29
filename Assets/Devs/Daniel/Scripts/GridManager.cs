@@ -13,12 +13,17 @@ public class GridManager : MonoBehaviour
 
     private void Awake()
     {
+        CreateGrid();
+    }
+
+    private void CreateGrid()
+    {
         for (int x = 0; x < gridSize.x; x++)
         {
-            for(int y = 0; y < gridSize.y; y++)
+            for (int y = 0; y < gridSize.y; y++)
             {
                 Vector2Int cords = new Vector2Int(x, y);
-                grid.Add(cords, new Node(cords));
+                grid.Add(cords, new Node(cords, true));
 
                 //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 //Vector3 position = new Vector3(cords.x * unitGridSize, 0f, cords.y * unitGridSize);
@@ -26,5 +31,15 @@ public class GridManager : MonoBehaviour
                 //cube.transform.SetParent(transform);
             }
         }
+    }
+
+    public bool IsTileWalkable(Vector2Int targetCords)
+    {
+        if (grid.ContainsKey(targetCords))
+        {
+            return grid[targetCords].isWalkable;
+        }
+
+        return false;
     }
 }
