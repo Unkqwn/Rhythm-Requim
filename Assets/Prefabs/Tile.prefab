@@ -106,7 +106,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: -2147483648, -2147483648
+  m_text: 0, 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 5157714804052735746}
   - component: {fileID: 5658230602389166181}
   - component: {fileID: 6675550813369947169}
+  - component: {fileID: 5322187865255270364}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Tile
@@ -249,6 +250,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69ac57df9b0f4f4e8dca9455eea0ae3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Labeller
+  cords: {x: 0, y: 0}
+--- !u!114 &5322187865255270364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4273653751346469776}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9e92c8e2976baa408c72d95a636028f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tile
+  isWalkable: 1
 --- !u!1 &6904433158528868369
 GameObject:
   m_ObjectHideFlags: 0

@@ -42,9 +42,12 @@ public class UnitController : MonoBehaviour
             // check of walkable
             if (gridManager.IsTileWalkable(targetGridPos))
             {
+
+                float targetHeight = gridManager.GetTileHeight(targetGridPos);
+
                 unitTransform.position = new Vector3(
                     targetGridPos.x * gridManager.UnityGridSize,
-                    unitTransform.position.y,
+                    targetHeight,
                     targetGridPos.y * gridManager.UnityGridSize
                 );
             }
