@@ -1,12 +1,14 @@
 using UnityEngine;
 
+[System.Serializable]
 public class Node
 {
-    public Vector2Int cords;
+    public Vector2Int coordinates;
+    public bool isWalkable; 
 
-    public Node(Vector2Int cords)
+    public Node(Vector2Int coordinates, bool isWalkable)
     {
-        this.cords = cords;
+        this.coordinates = coordinates;
+        this.isWalkable = isWalkable;
     }
 }
-
