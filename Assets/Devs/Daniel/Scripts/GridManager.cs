@@ -3,33 +3,24 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    [SerializeField] Vector2Int gridSize;
+    // gridSize is no longer needed since your physical tiles define the grid layout dynamically!
     [SerializeField] int unityGridSize;
-
     public int UnityGridSize { get { return unityGridSize; } }
 
     Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
-    Dictionary<Vector2Int, Node> Grid {  get { return grid; } }
 
-    private void Awake()
+    // This is called by each Tile script on Start()
+    public void RegisterTile(Vector2Int cords, bool isWalkable, float height)
     {
-        CreateGrid();
-    }
-
-    private void CreateGrid()
-    {
-        for (int x = 0; x < gridSize.x; x++)
+        if (!grid.ContainsKey(cords))
         {
-            for (int y = 0; y < gridSize.y; y++)
-            {
-                Vector2Int cords = new Vector2Int(x, y);
-                grid.Add(cords, new Node(cords, true));
-
-                //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                //Vector3 position = new Vector3(cords.x * unitGridSize, 0f, cords.y * unitGridSize);
-                //cube.transform.position = position;
-                //cube.transform.SetParent(transform);
-            }
+            grid.Add(cords, new Node(cords, isWalkable, height));
+        }
+        else
+        {
+            // Update it if it somehow exists already
+            grid[cords].isWalkable = isWalkable;
+            grid[cords].worldHeight = height;
         }
     }
 
@@ -39,7 +30,15 @@ public class GridManager : MonoBehaviour
         {
             return grid[targetCords].isWalkable;
         }
-
         return false;
+    }
+
+    public float GetTileHeight(Vector2Int targetCords)
+    {
+        if (grid.ContainsKey(targetCords))
+        {
+            return grid[targetCords].worldHeight;
+        }
+        return 0f;
     }
 }
