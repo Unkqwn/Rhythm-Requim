@@ -53,7 +53,7 @@ public class UnitController : MonoBehaviour
             }
             else
             {
-                Debug.Log("cant move here");
+                Debug.Log($"Failed Move! Player is at {currentGridPos}. Tried to go to {targetGridPos}. Grid Size is {gridManager.UnityGridSize}");
             }
         }
     }
