@@ -4,26 +4,18 @@ public class Tile : MonoBehaviour
 {
     [SerializeField] bool isWalkable = true;
 
-    void Start()
+    void Awake()
     {
-        // 1. Grab coordinates from the Labeller script already on this tile
-        Labeller labeller = GetComponent<Labeller>();
-        if (labeller == null)
-        {
-            Debug.LogError($"Tile at {transform.position} is missing its Labeller script!");
-            return;
-        }
+        GridManager gridManager = FindAnyObjectByType<GridManager>();
+        if (gridManager == null) return;
 
-        Vector2Int cords = labeller.cords;
+        // Calculate grid coordinates automatically from physical 3D space positions!
+        int gridX = Mathf.RoundToInt(transform.position.x / gridManager.UnityGridSize);
+        int gridZ = Mathf.RoundToInt(transform.position.z / gridManager.UnityGridSize);
+        Vector2Int cords = new Vector2Int(gridX, gridZ);
 
-        // 2. Grab its actual Y position from the 3D scene
         float physicalHeight = transform.position.y;
 
-        // 3. Register this tile directly into the GridManager dictionary
-        GridManager gridManager = FindAnyObjectByType<GridManager>();
-        if (gridManager != null)
-        {
-            gridManager.RegisterTile(cords, isWalkable, physicalHeight);
-        }
+        gridManager.RegisterTile(cords, isWalkable, physicalHeight);
     }
 }

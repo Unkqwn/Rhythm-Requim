@@ -3,22 +3,23 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    // gridSize is no longer needed since your physical tiles define the grid layout dynamically!
     [SerializeField] int unityGridSize;
     public int UnityGridSize { get { return unityGridSize; } }
 
-    Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
+    // FIX: Initialize the dictionary directly inline right here!
+    private Dictionary<Vector2Int, Node> grid = new Dictionary<Vector2Int, Node>();
 
-    // This is called by each Tile script on Start()
+    // Delete the private void Awake() method entirely if it's still there!
+
     public void RegisterTile(Vector2Int cords, bool isWalkable, float height)
     {
+        // Now 'grid' will never be null when tiles call this
         if (!grid.ContainsKey(cords))
         {
             grid.Add(cords, new Node(cords, isWalkable, height));
         }
         else
         {
-            // Update it if it somehow exists already
             grid[cords].isWalkable = isWalkable;
             grid[cords].worldHeight = height;
         }
@@ -26,7 +27,7 @@ public class GridManager : MonoBehaviour
 
     public bool IsTileWalkable(Vector2Int targetCords)
     {
-        if (grid.ContainsKey(targetCords))
+        if (grid != null && grid.ContainsKey(targetCords))
         {
             return grid[targetCords].isWalkable;
         }
@@ -35,7 +36,7 @@ public class GridManager : MonoBehaviour
 
     public float GetTileHeight(Vector2Int targetCords)
     {
-        if (grid.ContainsKey(targetCords))
+        if (grid != null && grid.ContainsKey(targetCords))
         {
             return grid[targetCords].worldHeight;
         }
