@@ -8,5 +8,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Devs/Daan/Scenes/Daans scene.unity
+    guid: 7524bf2faaed32d4a94de43027418a44
+  - enabled: 1
+    path: Assets/Scenes/Mainscene.unity
+    guid: 47ace650ebb18fe4491ab807d519c67f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
