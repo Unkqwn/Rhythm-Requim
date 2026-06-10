@@ -53,7 +53,7 @@ public class EnemyRangedAttack : MonoBehaviour
         BulletProjectile projectileScript = bullet.GetComponent<BulletProjectile>();
         if (projectileScript != null)
         {
-            projectileScript.Setup(target.transform.position, damage);
+            projectileScript.Setup(target.transform.position, damage, "Enemy");
         }
     }
 

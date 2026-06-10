@@ -40,19 +40,22 @@ public class PlayerRangedAttack : MonoBehaviour
 
     private void Shoot(Vector3 direction)
     {
-        // Set the next allowed fire time cleanly based on RPM math
         float cooldownSeconds = 60f / roundsPerMinute;
         nextFireTime = Time.time + cooldownSeconds;
 
         Debug.Log("Player fired a shot!");
 
-        // Spawn the player bullet slightly out in front of the player so it doesn't collide with yourself
         Vector3 spawnPosition = transform.position + (Vector3.up * 0.5f) + (direction * 0.6f);
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
 
-        // Calculate a target point far down the line on the grid map
         Vector3 targetPoint = transform.position + (direction * 50f);
 
-
+        // Grab the script from the bullet we just spawned
+        BulletProjectile projectileScript = bullet.GetComponent<BulletProjectile>();
+        if (projectileScript != null)
+        {
+            // FIX: Pass "Player" as the third argument so the bullet knows you shot it!
+            projectileScript.Setup(targetPoint, damage, "Unit");
+        }
     }
 }

@@ -3,25 +3,26 @@ using UnityEngine;
 public class EnemyHealth : MonoBehaviour, IDamageable
 {
     [SerializeField] private float maxHealth = 100f;
-    private float health = 100f;
+    private float currentHealth;
 
     void Start()
     {
-        health = maxHealth;
+        currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damageAmount)
     {
-        health -= damage;
-        Debug.Log($"Enemy took {damage} damage. Current health: {health}");
-        if (health <= 0)
+        currentHealth -= damageAmount;
+        Debug.Log($"{gameObject.name} took {damageAmount} damage! Health left: {currentHealth}");
+
+        if (currentHealth <= 0)
         {
             Death();
         }
     }
-
     public void Death()
     {
-        Debug.Log("Enemy has died.");
+        Debug.Log($"{gameObject.name} was destroyed!");
+        Destroy(gameObject);
     }
 }

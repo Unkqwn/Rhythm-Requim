@@ -626,6 +626,7 @@ GameObject:
   - component: {fileID: 637050132}
   - component: {fileID: 637050131}
   - component: {fileID: 637050134}
+  - component: {fileID: 637050135}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Unit
@@ -685,6 +686,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
   maxHealth: 100
+--- !u!114 &637050135
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 637050130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eef63228f92bb747ab7f99d80dbd560, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerRangedAttack
+  bulletPrefab: {fileID: 4329162237607466219, guid: 8eb3971333e20784b907ebee7cab3a2b, type: 3}
+  damage: 20
+  roundsPerMinute: 120
 --- !u!1001 &645315390
 PrefabInstance:
   m_ObjectHideFlags: 0
