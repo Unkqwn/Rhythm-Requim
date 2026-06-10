@@ -5,11 +5,9 @@ public class EnemyController : MonoBehaviour
 {
     [SerializeField] Transform enemyTransform;
     [SerializeField] float moveInterval = 2f;
-    [SerializeField] int attackRange = 3; // How many tiles away the enemy can shoot
 
     private GridManager gridManager;
-    private EnemyVision enemyVision;
-    private EnemyRangedAttack enemyRangedAttack; // Swapped to our new ranged component!
+    private EnemyRangedAttack enemyRangedAttack;
     private PlayerHealth playerTargetComponent;
 
     private Vector2Int[] directions = { Vector2Int.up, Vector2Int.down, Vector2Int.left, Vector2Int.right };
@@ -17,8 +15,7 @@ public class EnemyController : MonoBehaviour
     void Start()
     {
         gridManager = FindAnyObjectByType<GridManager>();
-        enemyVision = GetComponent<EnemyVision>();
-        enemyRangedAttack = GetComponent<EnemyRangedAttack>(); // Grab the shooting script
+        enemyRangedAttack = GetComponent<EnemyRangedAttack>();
         playerTargetComponent = FindAnyObjectByType<PlayerHealth>();
 
         if (enemyTransform == null) enemyTransform = this.transform;
@@ -32,36 +29,23 @@ public class EnemyController : MonoBehaviour
         {
             yield return new WaitForSeconds(moveInterval);
 
-            if (enemyTransform != null && gridManager != null)
+            // Only move if we aren't currently busy looking at/shooting the player!
+            if (enemyTransform != null && gridManager != null && enemyRangedAttack != null)
             {
-                ExecuteEnemyTurn();
+                if (!enemyRangedAttack.IsPlayerInSight() && playerTargetComponent != null)
+                {
+                    ExecuteMovementTurn();
+                }
             }
         }
     }
 
-    void ExecuteEnemyTurn()
+    void ExecuteMovementTurn()
     {
         int currentX = Mathf.RoundToInt(enemyTransform.position.x / gridManager.UnityGridSize);
         int currentZ = Mathf.RoundToInt(enemyTransform.position.z / gridManager.UnityGridSize);
         Vector2Int enemyGridPos = new Vector2Int(currentX, currentZ);
 
-        // 1. Scan for the player anywhere in our line of sight up to 'attackRange' tiles away
-        GameObject visiblePlayer = enemyVision.ScanForPlayerRanged(enemyGridPos, gridManager, attackRange);
-
-        if (visiblePlayer != null)
-        {
-            // If player is in sight, freeze position and shoot!
-            enemyRangedAttack.ShootTarget(visiblePlayer);
-        }
-        else if (playerTargetComponent != null)
-        {
-            // Otherwise, keep hunting across tiles
-            MoveTowardsPlayer(enemyGridPos);
-        }
-    }
-
-    void MoveTowardsPlayer(Vector2Int enemyGridPos)
-    {
         int playerX = Mathf.RoundToInt(playerTargetComponent.transform.position.x / gridManager.UnityGridSize);
         int playerZ = Mathf.RoundToInt(playerTargetComponent.transform.position.z / gridManager.UnityGridSize);
         Vector2Int playerGridPos = new Vector2Int(playerX, playerZ);
