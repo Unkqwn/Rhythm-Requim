@@ -13,16 +13,19 @@ public class EnemyHealth : MonoBehaviour, IDamageable
     public void TakeDamage(float damageAmount)
     {
         currentHealth -= damageAmount;
-        Debug.Log($"{gameObject.name} took {damageAmount} damage! Health left: {currentHealth}");
+
+        //  THE TRUTH LOG: This will print instantly when the player successfully hits the enemy
+        Debug.LogWarning($" [ENEMY HIT!] {gameObject.name} took {damageAmount} damage! Health left: {currentHealth}");
 
         if (currentHealth <= 0)
         {
             Death();
         }
     }
+
     public void Death()
     {
-        Debug.Log($"{gameObject.name} was destroyed!");
+        Debug.LogError($" {gameObject.name} was destroyed!");
         Destroy(gameObject);
     }
 }

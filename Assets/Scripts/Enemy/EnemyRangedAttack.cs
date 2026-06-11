@@ -42,18 +42,16 @@ public class EnemyRangedAttack : MonoBehaviour
 
     private void ShootTarget(GameObject target)
     {
-        Debug.Log($"{gameObject.name} fires a shot at {target.name}!");
-
-        // Set the next allowed fire time cleanly based on RPM math
         float cooldownSeconds = 60f / roundsPerMinute;
         nextFireTime = Time.time + cooldownSeconds;
 
         GameObject bullet = Instantiate(bulletPrefab, transform.position + Vector3.up * 0.5f, Quaternion.identity);
 
+        // Switch this to look for EnemyBullet!
         BulletProjectile projectileScript = bullet.GetComponent<BulletProjectile>();
         if (projectileScript != null)
         {
-            projectileScript.Setup(target.transform.position, damage, "Enemy");
+            projectileScript.Setup(target.transform.position, damage);
         }
     }
 

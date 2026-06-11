@@ -5,11 +5,9 @@ public class BulletProjectile : MonoBehaviour
     [SerializeField] private float speed = 10f;
     private Vector3 targetPosition;
     private float bulletDamage;
-    private string factionToIgnore; // Stores "Player" or "Enemy" depending on who shot it
     private bool isInitialized = false;
 
-    // FIX: Added 'ownerTag' so the bullet knows who fired it!
-    public void Setup(Vector3 targetPos, float damageValue, string ownerTag)
+    public void Setup(Vector3 targetPos, float damageValue)
     {
         GridManager gridManager = FindAnyObjectByType<GridManager>();
         float gridSize = gridManager != null ? gridManager.UnityGridSize : 1f;
@@ -19,7 +17,6 @@ public class BulletProjectile : MonoBehaviour
 
         targetPosition = new Vector3(snappedX, transform.position.y, snappedZ);
         bulletDamage = damageValue;
-        factionToIgnore = ownerTag; // Save the tag of the shooter
         isInitialized = true;
     }
 
@@ -31,15 +28,22 @@ public class BulletProjectile : MonoBehaviour
 
         if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.5f);
+            Vector3 pointLow = new Vector3(transform.position.x, -5f, transform.position.z);
+            Vector3 pointHigh = new Vector3(transform.position.x, 5f, transform.position.z);
+
+            Collider[] colliders = Physics.OverlapCapsule(pointLow, pointHigh, 0.6f);
+
             foreach (Collider col in colliders)
             {
-                IDamageable damageable = col.GetComponent<IDamageable>();
-
-                // FIX: Instead of hardcoding "Enemy", it ignores whatever faction shot it!
-                if (damageable != null && !col.CompareTag(factionToIgnore))
+                // Strict rule: ONLY hurt objects tagged Player or Unit
+                if (col.CompareTag("Player") || col.CompareTag("Unit"))
                 {
-                    damageable.TakeDamage(bulletDamage);
+                    IDamageable damageable = col.GetComponent<IDamageable>();
+                    if (damageable != null)
+                    {
+                        damageable.TakeDamage(bulletDamage);
+                        break;
+                    }
                 }
             }
 

@@ -43,19 +43,16 @@ public class PlayerRangedAttack : MonoBehaviour
         float cooldownSeconds = 60f / roundsPerMinute;
         nextFireTime = Time.time + cooldownSeconds;
 
-        Debug.Log("Player fired a shot!");
-
         Vector3 spawnPosition = transform.position + (Vector3.up * 0.5f) + (direction * 0.6f);
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
 
         Vector3 targetPoint = transform.position + (direction * 50f);
 
-        // Grab the script from the bullet we just spawned
-        BulletProjectile projectileScript = bullet.GetComponent<BulletProjectile>();
+        // Switch this to look for PlayerBullet!
+        PlayerBullet projectileScript = bullet.GetComponent<PlayerBullet>();
         if (projectileScript != null)
         {
-            // FIX: Pass "Player" as the third argument so the bullet knows you shot it!
-            projectileScript.Setup(targetPoint, damage, "Unit");
+            projectileScript.Setup(targetPoint, damage);
         }
     }
 }
