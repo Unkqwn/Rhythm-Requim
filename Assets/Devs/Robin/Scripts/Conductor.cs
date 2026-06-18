@@ -15,9 +15,15 @@ public class Conductor : MonoBehaviour
     [SerializeField] private float beatsToArrive = 5f;
     [SerializeField] private float beatDistance = 300f;
 
+    [Header("Input Window Settings")]
+    [SerializeField] private float timingWindowSeconds = 0.2f;
+
     public static Conductor instance;
 
     void Awake() { instance = this; }
+
+    public float SongPositionInBeats => songPositionInBeats;
+    public float BeatInterval => beatInterval;
 
     private void Start()
     {
@@ -36,6 +42,21 @@ public class Conductor : MonoBehaviour
             lastBeat = currentBeat;
             SpawnNote();
         }
+    }
+
+    public bool IsOnBeat()
+    {
+        // Find the nearest whole number beat (e.g., if songPositionInBeats is 4.15, nearest is 4.0)
+        float nearestBeat = Mathf.Round(songPositionInBeats);
+
+        // Calculate the difference in fractional beats
+        float beatDifference = Mathf.Abs(songPositionInBeats - nearestBeat);
+
+        // Convert that beat fraction back into raw audio seconds
+        float timeDifferenceInSeconds = beatDifference * beatInterval;
+
+        // Return true if the player clicked within the 0.2s window
+        return timeDifferenceInSeconds <= timingWindowSeconds;
     }
 
     private void SpawnNote()

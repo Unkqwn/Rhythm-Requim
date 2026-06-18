@@ -43,16 +43,28 @@ public class PlayerRangedAttack : MonoBehaviour
         float cooldownSeconds = 60f / roundsPerMinute;
         nextFireTime = Time.time + cooldownSeconds;
 
+        // 1. ROTATE THE CHARACTER TOWARDS THE SHOOTING DIRECTION
+        if (direction != Vector3.zero)
+        {
+            // Force the direction to stay flat on the Y axis so the character doesn't tilt up/down
+            Vector3 flatDirection = new Vector3(direction.x, 0f, direction.z);
+
+            // Create the rotation looking down the shooting path
+            Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
+
+            // Apply the rotation to the player
+            transform.rotation = targetRotation;
+        }
+
+        // 2. SPAWN THE BULLET (This stays the same as before)
         Vector3 spawnPosition = transform.position + (Vector3.up * 0.5f) + (direction * 0.6f);
         GameObject bullet = Instantiate(bulletPrefab, spawnPosition, Quaternion.identity);
 
-        Vector3 targetPoint = transform.position + (direction * 50f);
-
-        // Switch this to look for PlayerBullet!
+        // Grab your bullet script component (using whatever bullet setup you currently have active)
         PlayerBullet projectileScript = bullet.GetComponent<PlayerBullet>();
         if (projectileScript != null)
         {
-            projectileScript.Setup(targetPoint, damage);
+            projectileScript.Setup(direction, damage);
         }
     }
 }

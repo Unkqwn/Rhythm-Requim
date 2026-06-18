@@ -4,6 +4,7 @@ public class UnitController : MonoBehaviour
 {
     [SerializeField] Transform unitTransform;
     [SerializeField] float movementSpeed = 1f;
+    private int lastMovedBeatNumber = -1;
 
     GridManager gridManager;
 
@@ -19,41 +20,70 @@ public class UnitController : MonoBehaviour
 
     void Update()
     {
-        if (unitTransform == null || gridManager == null) return;
+        if (unitTransform == null || gridManager == null || Conductor.instance == null) return;
 
-        Vector2Int gridDirection = Vector2Int.zero;
+        // Detect if ANY movement key was tapped this frame
+        bool inputPressed = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) ||
+                             Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D);
 
-        // WASD input
-        if (Input.GetKeyDown(KeyCode.W)) gridDirection += Vector2Int.up;    // +Y in Grid (Forward in 3D)
-        if (Input.GetKeyDown(KeyCode.S)) gridDirection += Vector2Int.down;  // -Y in Grid (Backward in 3D)
-        if (Input.GetKeyDown(KeyCode.A)) gridDirection += Vector2Int.left;  // -X in Grid (Left in 3D)
-        if (Input.GetKeyDown(KeyCode.D)) gridDirection += Vector2Int.right; // +X in Grid (Right in 3D)
-
-        if (gridDirection != Vector2Int.zero)
+        if (inputPressed)
         {
-            // check de current location
-            int currentX = Mathf.RoundToInt(unitTransform.position.x / gridManager.UnityGridSize);
-            int currentZ = Mathf.RoundToInt(unitTransform.position.z / gridManager.UnityGridSize);
-            Vector2Int currentGridPos = new Vector2Int(currentX, currentZ);
+            // Get the current beat integer from the conductor (e.g. Beat 4, Beat 5...)
+            int currentBeatInteger = Mathf.RoundToInt(Conductor.instance.SongPositionInBeats);
 
-            // check waar de player heen wil
-            Vector2Int targetGridPos = currentGridPos + gridDirection;
-
-            // check of walkable
-            if (gridManager.IsTileWalkable(targetGridPos))
+            // ?? CHECK A: Have we already moved on this exact beat number?
+            if (currentBeatInteger == lastMovedBeatNumber)
             {
+                Debug.LogWarning("?? Already moved on this beat! Wait for the next one.");
+                return; // Reject spam instantly
+            }
 
-                float targetHeight = gridManager.GetTileHeight(targetGridPos);
+            // ?? CHECK B: Is the player clicking within the timing window?
+            if (Conductor.instance.IsOnBeat())
+            {
+                Vector2Int gridDirection = Vector2Int.zero;
 
-                unitTransform.position = new Vector3(
-                    targetGridPos.x * gridManager.UnityGridSize,
-                    targetHeight,
-                    targetGridPos.y * gridManager.UnityGridSize
-                );
+                if (Input.GetKeyDown(KeyCode.W)) gridDirection += Vector2Int.up;
+                if (Input.GetKeyDown(KeyCode.S)) gridDirection += Vector2Int.down;
+                if (Input.GetKeyDown(KeyCode.A)) gridDirection += Vector2Int.left;
+                if (Input.GetKeyDown(KeyCode.D)) gridDirection += Vector2Int.right;
+
+                if (gridDirection != Vector2Int.zero)
+                {
+                    int currentX = Mathf.RoundToInt(unitTransform.position.x / gridManager.UnityGridSize);
+                    int currentZ = Mathf.RoundToInt(unitTransform.position.z / gridManager.UnityGridSize);
+                    Vector2Int currentGridPos = new Vector2Int(currentX, currentZ);
+
+                    Vector2Int targetGridPos = currentGridPos + gridDirection;
+
+                    if (gridManager.IsTileWalkable(targetGridPos))
+                    {
+                        float targetHeight = gridManager.GetTileHeight(targetGridPos);
+
+                        unitTransform.position = new Vector3(
+                            targetGridPos.x * gridManager.UnityGridSize,
+                            targetHeight,
+                            targetGridPos.y * gridManager.UnityGridSize
+                        );
+
+                        // Rotate character toward walking direction
+                        Vector3 lookDirection = new Vector3(gridDirection.x, 0f, gridDirection.y);
+                        if (lookDirection != Vector3.zero)
+                        {
+                            unitTransform.rotation = Quaternion.LookRotation(lookDirection);
+                        }
+
+                        // ?? SUCCESS LOCK: Save the current beat number so we can't move here again!
+                        lastMovedBeatNumber = currentBeatInteger;
+
+                        Debug.Log($"On beat #{currentBeatInteger}!");
+                    }
+                }
             }
             else
             {
-                Debug.Log($"Failed Move! Player is at {currentGridPos}. Tried to go to {targetGridPos}. Grid Size is {gridManager.UnityGridSize}");
+                // Penalty block: Misclicked the window entirely
+                Debug.LogWarning("Missed beat");
             }
         }
     }
