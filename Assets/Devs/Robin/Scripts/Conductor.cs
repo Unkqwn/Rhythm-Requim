@@ -18,6 +18,7 @@ public class Conductor : MonoBehaviour
     [Header("Input Window Settings")]
     [SerializeField] private float timingWindowSeconds = 0.2f;
 
+
     public static Conductor instance;
 
     void Awake() { instance = this; }

@@ -8,6 +8,14 @@ public class UnitController : MonoBehaviour
 
     GridManager gridManager;
 
+    [Header("Extra Settings")]
+    [SerializeField] private ParticleSystem beatHitParticles;
+
+    [Header("UI Feedback Settings")]
+    [SerializeField] private RectTransform rhythmTargetUI; // Drag your center rhythm UI element here
+    [SerializeField] private float beatScaleBump = 1.4f;     // How big it pops when you hit it right
+    [SerializeField] private float scaleShrinkSpeed = 10f;  // How fast it shrinks back down
+
     void Start()
     {
         gridManager = FindAnyObjectByType<GridManager>();
@@ -22,27 +30,27 @@ public class UnitController : MonoBehaviour
     {
         if (unitTransform == null || gridManager == null || Conductor.instance == null) return;
 
-        // Detect if ANY movement key was tapped this frame
+        if (rhythmTargetUI != null)
+        {
+            rhythmTargetUI.localScale = Vector3.Lerp(
+                rhythmTargetUI.localScale,
+                Vector3.one,
+                scaleShrinkSpeed * Time.deltaTime
+            );
+        }
+
         bool inputPressed = Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S) ||
                              Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.D);
 
         if (inputPressed)
         {
-            // Get the current beat integer from the conductor (e.g. Beat 4, Beat 5...)
             int currentBeatInteger = Mathf.RoundToInt(Conductor.instance.SongPositionInBeats);
 
-            // ?? CHECK A: Have we already moved on this exact beat number?
-            if (currentBeatInteger == lastMovedBeatNumber)
-            {
-                Debug.LogWarning("?? Already moved on this beat! Wait for the next one.");
-                return; // Reject spam instantly
-            }
+            if (currentBeatInteger == lastMovedBeatNumber) return; // spam block
 
-            // ?? CHECK B: Is the player clicking within the timing window?
             if (Conductor.instance.IsOnBeat())
             {
                 Vector2Int gridDirection = Vector2Int.zero;
-
                 if (Input.GetKeyDown(KeyCode.W)) gridDirection += Vector2Int.up;
                 if (Input.GetKeyDown(KeyCode.S)) gridDirection += Vector2Int.down;
                 if (Input.GetKeyDown(KeyCode.A)) gridDirection += Vector2Int.left;
@@ -53,7 +61,6 @@ public class UnitController : MonoBehaviour
                     int currentX = Mathf.RoundToInt(unitTransform.position.x / gridManager.UnityGridSize);
                     int currentZ = Mathf.RoundToInt(unitTransform.position.z / gridManager.UnityGridSize);
                     Vector2Int currentGridPos = new Vector2Int(currentX, currentZ);
-
                     Vector2Int targetGridPos = currentGridPos + gridDirection;
 
                     if (gridManager.IsTileWalkable(targetGridPos))
@@ -66,24 +73,37 @@ public class UnitController : MonoBehaviour
                             targetGridPos.y * gridManager.UnityGridSize
                         );
 
-                        // Rotate character toward walking direction
                         Vector3 lookDirection = new Vector3(gridDirection.x, 0f, gridDirection.y);
                         if (lookDirection != Vector3.zero)
                         {
                             unitTransform.rotation = Quaternion.LookRotation(lookDirection);
                         }
 
-                        // ?? SUCCESS LOCK: Save the current beat number so we can't move here again!
                         lastMovedBeatNumber = currentBeatInteger;
 
-                        Debug.Log($"On beat #{currentBeatInteger}!");
+                        if (beatHitParticles != null) beatHitParticles.Play();
+
+                        if (rhythmTargetUI != null)
+                        {
+                            rhythmTargetUI.localScale = Vector3.one * beatScaleBump;
+                        }
+
+                        if (Camera.main != null)
+                        {
+                            CameraFollow camFollow = Camera.main.GetComponent<CameraFollow>();
+                            if (camFollow != null)
+                            {
+                                camFollow.TriggerHitKick();
+                            }
+                        }
+
+                        Debug.Log($"hit beat #{currentBeatInteger}!");
                     }
                 }
             }
             else
             {
-                // Penalty block: Misclicked the window entirely
-                Debug.LogWarning("Missed beat");
+                Debug.LogWarning("Missed the beat");
             }
         }
     }

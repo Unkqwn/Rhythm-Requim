@@ -6,13 +6,25 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+    path: Assets/Scenes/MainMenu.unity
+    guid: 03a165f02e8599245a4b53d8ba41f955
+  - enabled: 1
+    path: "Assets/Devs/Daniel/Scenes/Dani\xEBl Scene.unity"
+    guid: 9fa2cfb80340c6c44aba985e0c667468
   - enabled: 1
     path: Assets/Devs/Daan/Scenes/Daans scene.unity
     guid: 7524bf2faaed32d4a94de43027418a44
   - enabled: 1
+    path: Assets/Scenes/WinScene.unity
+    guid: 352b0cecffd3109489c4e9bdc2ea1c2a
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: edc87f247c600c24d9a24feebb6d0158
+  - enabled: 0
     path: Assets/Scenes/Mainscene.unity
     guid: 47ace650ebb18fe4491ab807d519c67f
+  - enabled: 0
+    path: Assets/Scenes/SampleScene.unity
+    guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

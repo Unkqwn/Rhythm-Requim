@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
@@ -26,6 +27,7 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     public void Death()
     {
+        SceneManager.LoadScene("GameOver");
         Debug.Log("Player has died.");
     }
 }

@@ -10,7 +10,7 @@ public void quit()
     }
     public void play()
     {
-   SceneManager.LoadScene("Mainscene");
+   SceneManager.LoadScene("Daniël Scene");
     }
     public void credits()
     {
