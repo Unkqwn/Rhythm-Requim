@@ -60495,6 +60495,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -5363424281805771908, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 890517fabab1542469cc244ee9ba1bc4, type: 2}
+    - target: {fileID: -4791300549530949414, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d5dd96f8105daeb46981a5ff306b2963, type: 2}
     - target: {fileID: 919132149155446097, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
       propertyPath: m_Name
       value: roadside props (1)
@@ -103491,67 +103499,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 770395640}
   m_Mesh: {fileID: -153830957423991239, guid: 3b46b4d0822da2b47b9e0c50c5d811c1, type: 3}
---- !u!1001 &771234834
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 17.053152
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.099998824
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 13.158419
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: m_Name
-      value: roadside props
-      objectReference: {fileID: 0}
-    - target: {fileID: 1738776581880846596, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: a249dce6bbaff2541852968d26ef7c0d, type: 2}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: fb7d9333f4578d6458cdb613a95eaeb7, type: 3}
 --- !u!1 &772135351
 GameObject:
   m_ObjectHideFlags: 0
@@ -286882,7 +286829,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1909570285847674057, guid: f4ab8f0d390332246938f8c05ae3c999, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 20.49
+      value: 37.19
       objectReference: {fileID: 0}
     - target: {fileID: 1909570285847674057, guid: f4ab8f0d390332246938f8c05ae3c999, type: 3}
       propertyPath: m_LocalRotation.w
@@ -286939,7 +286886,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5230450108319185765, guid: b9feec5b3b69557428b643edd654337b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.182859
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 5230450108319185765, guid: b9feec5b3b69557428b643edd654337b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -286982,7 +286929,6 @@ SceneRoots:
   - {fileID: 306168981}
   - {fileID: 1762891147}
   - {fileID: 1177929356}
-  - {fileID: 771234834}
   - {fileID: 432077453}
   - {fileID: 1353438795}
   - {fileID: 183249224}
